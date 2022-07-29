@@ -6,14 +6,15 @@ import requests
 pydantic.json.ENCODERS_BY_TYPE[ObjectId]=str
 from fastapi import FastAPI
 import pymongo
+
 alerts=[]
 myclient = pymongo.MongoClient("mongodb://ak2:1234@cluster0-shard-00-00.lrmw0.mongodb.net:27017,cluster0-shard-00-01.lrmw0.mongodb.net:27017,cluster0-shard-00-02.lrmw0.mongodb.net:27017/?ssl=true&replicaSet=atlas-111t6w-shard-0&authSource=admin&retryWrites=true&w=majority")
 mydb = myclient["mydb"]
 mycol = mydb["alerts"]
 app = FastAPI()
-@app.get("/my-first-api")
+@app.get("/")
 def hello():
-  return {"Hello world!"}
+  return {"CryptoAlert is running"}
 @app.get("/alerts/create/")
 def create():
     price=input('Enter a price limit to set alert')
@@ -24,14 +25,12 @@ def create():
     @app.get("/alerts/create/"+price)
     def create_alert():
         return {"Alert at price": price}
-    return {"Alert "+price+" created"}
-def delete():
-    delalert=input("enter alert price to delete")
-    return delalert
+    return {"Alert for price:"+price+" created"}
+
 
 @app.get("/alerts/delete/{tobedel}")
 def del_alert(tobedel):
-    tobedel=delete()
+    tobedel=input("enter alert price to delete")
     myquery = { "alert": tobedel }
     newvalues = { "$set": { "status": "deleted" } }
 
