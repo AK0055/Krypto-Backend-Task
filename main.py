@@ -8,7 +8,11 @@ from fastapi import FastAPI
 import pymongo
 import jwt
 import smtplib, ssl
+import redis
 
+r = redis.Redis(decode_responses=True)
+if r:
+    print("Redis connected")
 alerts=[]
 myclient = pymongo.MongoClient("mongodb://ak2:1234@cluster0-shard-00-00.lrmw0.mongodb.net:27017,cluster0-shard-00-01.lrmw0.mongodb.net:27017,cluster0-shard-00-02.lrmw0.mongodb.net:27017/?ssl=true&replicaSet=atlas-111t6w-shard-0&authSource=admin&retryWrites=true&w=majority")
 mydb = myclient["mydb"]
@@ -16,7 +20,7 @@ mycol = mydb["alerts"]
 app = FastAPI()
 @app.get("/")
 def hello():
-  return {"CryptoAlert is running"}
+  return {"KryptoAlert is running"}
 @app.get("/alerts/create/")
 def create():
     price=input('Enter a price limit to set alert')
@@ -54,8 +58,11 @@ def fetchall():
         alerts.append(x["alert"]) if x["status"]=="created" else print('Current alert is deleted')
         i+=1
     i=0
+    r = redis.StrictRedis()
+    r.execute_command('JSON.SET', 'object', '.', json.dumps(arr))
+    reply = json.loads(r.execute_command('JSON.GET', 'object'))
     token = jwt.encode(
-    payload=arr,
+    payload=json.loads(r.hmget("alerts").items()),
     key='mysecret'
     )
     print('Your JWT token is:'+token)
@@ -78,9 +85,9 @@ def trigger():
 
     port = 587  # For starttls
     smtp_server = "smtp-mail.outlook.com"
-    sender_email = "ak_0055@outlook.com"
+    sender_email = "<senderemail>"
     receiver_email = useremail
-    password = "Ajay@2001"
+    password = "<senderpwd>"
     message = """\
     Subject: Alert triggered!
 
