@@ -76,3 +76,20 @@ def trigger():
                 newvalues = { "$set": { "status": "triggered" } }
                 mycol.update_one(myquery, newvalues)
         return {"Triggered"}
+
+@app.get("/alerts/filter")
+def filter():
+    statuser=input("enter status to filter")
+    myquery = { "status": statuser }
+    mydoc = mycol.find(myquery)
+    i=0
+    arr={i:"Not found"}
+    for x in mydoc:
+        print(x)
+        arr2={"alert":x["alert"],"status":x["status"]}
+        arr[i]=arr2
+       
+        i+=1
+    i=0
+
+    return arr
