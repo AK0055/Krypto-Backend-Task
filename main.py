@@ -7,6 +7,7 @@ pydantic.json.ENCODERS_BY_TYPE[ObjectId]=str
 from fastapi import FastAPI
 import pymongo
 import jwt
+import smtplib, ssl
 
 alerts=[]
 myclient = pymongo.MongoClient("mongodb://ak2:1234@cluster0-shard-00-00.lrmw0.mongodb.net:27017,cluster0-shard-00-01.lrmw0.mongodb.net:27017,cluster0-shard-00-02.lrmw0.mongodb.net:27017/?ssl=true&replicaSet=atlas-111t6w-shard-0&authSource=admin&retryWrites=true&w=majority")
@@ -53,8 +54,14 @@ def fetchall():
         alerts.append(x["alert"]) if x["status"]=="created" else print('Current alert is deleted')
         i+=1
     i=0
-
-    return arr
+    token = jwt.encode(
+    payload=arr,
+    key='mysecret'
+    )
+    print('Your JWT token is:'+token)
+    
+    
+    return jwt.decode(token, key='mysecret', algorithms=['HS256', ])
 
 def getcurrent():
     api_url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=USD&order=market_cap_desc&per_page=100&page=1&sparkline=false"
@@ -66,9 +73,30 @@ def getcurrent():
 @app.get("/trigger/")
 def trigger():
     global alerts
+    #useremail=input("Please enter your email")
+    
+
+    port = 587  # For starttls
+    smtp_server = "smtp-mail.outlook.com"
+    sender_email = "ak_0055@outlook.com"
+    receiver_email = "m1ajay@hotmail.com"
+    password = "Ajay@2001"
+    message = """\
+    Subject: Alert triggered!
+
+    Your alert that has been set for BTC value is now triggered and the current price has exceeded"""
+
+    
     #print(alerts)
     if alerts:
-        
+        context = ssl.create_default_context()
+        with smtplib.SMTP(smtp_server, port) as server:
+            server.ehlo() 
+            server.starttls(context=context)
+            server.ehlo() 
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, message)
+            print("The mail was sent successfully")
         for i in alerts:
             #print(i,getcurrent())
             if  getcurrent()<= int(i):
