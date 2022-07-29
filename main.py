@@ -6,6 +6,7 @@ import requests
 pydantic.json.ENCODERS_BY_TYPE[ObjectId]=str
 from fastapi import FastAPI
 import pymongo
+import jwt
 
 alerts=[]
 myclient = pymongo.MongoClient("mongodb://ak2:1234@cluster0-shard-00-00.lrmw0.mongodb.net:27017,cluster0-shard-00-01.lrmw0.mongodb.net:27017,cluster0-shard-00-02.lrmw0.mongodb.net:27017/?ssl=true&replicaSet=atlas-111t6w-shard-0&authSource=admin&retryWrites=true&w=majority")
@@ -28,8 +29,8 @@ def create():
     return {"Alert for price:"+price+" created"}
 
 
-@app.get("/alerts/delete/{tobedel}")
-def del_alert(tobedel):
+@app.get("/alerts/delete")
+def del_alert():
     tobedel=input("enter alert price to delete")
     myquery = { "alert": tobedel }
     newvalues = { "$set": { "status": "deleted" } }
