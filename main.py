@@ -73,13 +73,13 @@ def getcurrent():
 @app.get("/trigger/")
 def trigger():
     global alerts
-    #useremail=input("Please enter your email")
+    useremail=input("Please enter your email")
     
 
     port = 587  # For starttls
     smtp_server = "smtp-mail.outlook.com"
     sender_email = "ak_0055@outlook.com"
-    receiver_email = "m1ajay@hotmail.com"
+    receiver_email = useremail
     password = "Ajay@2001"
     message = """\
     Subject: Alert triggered!
