@@ -38,6 +38,6 @@ achieved.
 
 6. Navigate to `http://127.0.0.1:8000/trigger` to process all alerts that have been crossed by the current BTC price, trigger an email to the requested email address.  Make sure to update the email address and password in these lines
 <div style="tab-size: 2">
- <img src="emailpwd.png" alt="img" width="80" height="80">
+ <img src="emailpwd.png" alt="img" width="472" height="92">
 </div>
  
