@@ -62,7 +62,7 @@ def fetchall():
     r.execute_command('JSON.SET', 'object', '.', json.dumps(arr))
     reply = json.loads(r.execute_command('JSON.GET', 'object'))
     token = jwt.encode(
-    payload=json.loads(r.hmget("alerts").items()),
+    payload= reply,
     key='mysecret'
     )
     print('Your JWT token is:'+token)
