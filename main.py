@@ -9,7 +9,7 @@ import pymongo
 import jwt
 import smtplib, ssl
 import redis
-print("KRYPTO-Alert")
+print("KRYPTO-Alert",flush=True)
 r = redis.Redis(decode_responses=True)
 if r:
     print("Redis connected")
