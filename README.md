@@ -28,13 +28,13 @@ achieved.
   cd Krypto-Backend-Task
   docker compose up
   ```
-2. Navigate to `http://127.0.0.1:8000/alerts/create` and enter an alert price in console to create a new alert
+2. Navigate to `http://0.0.0.0:80/alerts/create` and enter an alert price in console to create a new alert
 
-3. Navigate to `http://127.0.0.1:8000/alerts/delete` and enter an alert price in console to delete an alert
+3. Navigate to `http://0.0.0.0:80/alerts/delete` and enter an alert price in console to delete an alert
 
-4. Navigate to `http://127.0.0.1:8000/alerts/filter` and enter a status filter in console and display the particular alerts with a status: created/ deleted/ triggered
+4. Navigate to `http://0.0.0.0:80/alerts/filter` and enter a status filter in console and display the particular alerts with a status: created/ deleted/ triggered
 
-5. Navigate to `http://127.0.0.1:8000/alerts/` to view all alerts processed till this point
+5. Navigate to `http://0.0.0.0:80/alerts/` to view all alerts processed till this point
 
-6. Navigate to `http://127.0.0.1:8000/trigger` to process all alerts that have been crossed by the current BTC price, trigger an email to the requested email address
+6. Navigate to `http://0.0.0.0:80/trigger` to process all alerts that have been crossed by the current BTC price, trigger an email to the requested email address
  
