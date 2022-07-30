@@ -20,7 +20,7 @@ achieved.
     ```
 2. Python version > 3.6
 3. Docker and Docker compose
-
+4. Redis 
 
 ## Usage
 1. Start the application using
